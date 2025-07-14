@@ -17,4 +17,8 @@ class AIService:
             predicted_class = SPACE_CLASSES[probs.argmax().item()]
             confidence = probs.max().item()
 
-        return {"label": predicted_class, "confidence": round(confidence, 3)}
+        return {
+            "main_class": predicted_class,
+            "main_probability": round(confidence, 3),
+            "other_classes": [{ "class": SPACE_CLASSES[idx], "probability": round(probs[idx].item(), 3)} for idx in range(len(probs))]
+        }

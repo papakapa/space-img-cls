@@ -3,12 +3,16 @@ import torchvision.transforms as v2
 from torchvision import models
 from PIL import Image
 
-SPACE_CLASSES = ['AnnualCrop', 'Forest', 'HerbaceousVegetation', 'Highway', 'Industrial', 'Pasture',
-                 'PermanentCrop', 'Residential', 'River', 'SeaLake']
-MODEL_PATH = "models/resnet18_eurosat.pth"
+from app.config import settings_factory
+
+settings = settings_factory()
+
+SPACE_CLASSES = ['Annual Crop', 'Forest', 'Herbaceous Vegetation', 'Highway', 'Industrial', 'Pasture',
+                 'Permanent Crop', 'Residential', 'River', 'Sea Lake']
+MODEL_PATH = settings.MODEL_PATH
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# todo: more generic way | move to env
+# todo: more generic way
 def load_model():
     resnet18_model = models.resnet18()
     resnet18_model.fc = torch.nn.Linear(resnet18_model.fc.in_features, 10)

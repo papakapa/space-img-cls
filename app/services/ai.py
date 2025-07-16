@@ -8,7 +8,7 @@ model = load_model()
 class AIService:
 
     @staticmethod
-    def predict(img: Image):
+    def predict(img: Image, threshold = 0.7):
         image = transform(img).unsqueeze(0).to(device)
 
         with torch.no_grad():
@@ -16,6 +16,9 @@ class AIService:
             probs = torch.nn.functional.softmax(outputs[0], dim=0)
             predicted_class = SPACE_CLASSES[probs.argmax().item()]
             confidence = probs.max().item()
+
+            if confidence < threshold:
+                predicted_class = 'Unknown'
 
         return {
             "main_class": predicted_class,
